@@ -21,13 +21,20 @@ package org.wso2.carbon.connector.as400.pcml;
 import java.util.Arrays;
 
 /**
- * Represent an input parameter that is correlates to a input in the PCML source file.
+ * Represent an input parameter that correlates to an input in the PCML source file.
  */
 public class PCMLInputParam {
     private String qualifiedName;
     private int[] indices;
     private String value;
 
+    /**
+     * Creates an input parameter object.
+     *
+     * @param qualifiedName The qualified name for the PCML input.
+     * @param indices       The indices for setting indexed values. Needed when input payloads supports arrays.
+     * @param value         The input value.
+     */
     public PCMLInputParam(String qualifiedName, int[] indices, String value) {
         this.qualifiedName = qualifiedName;
         this.indices = indices;
@@ -58,6 +65,9 @@ public class PCMLInputParam {
         this.value = value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return "PCMLInputParam{" +

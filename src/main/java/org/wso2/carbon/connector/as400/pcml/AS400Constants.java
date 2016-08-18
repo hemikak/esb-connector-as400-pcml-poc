@@ -22,9 +22,10 @@ package org.wso2.carbon.connector.as400.pcml;
  * Constants for the connector.
  */
 public class AS400Constants {
-    public static final String AS400_PCML_INIT_SYSTEM_NAME = "as400.pcml.systemName";
-    public static final String AS400_PCML_INIT_USER_ID = "as400.pcml.userID";
-    public static final String AS400_PCML_INIT_PASSWORD = "as400.pcml.password";
+    public static final String AS400_INSTANCE = "as400Instance";
+    public static final String AS400_INIT_SYSTEM_NAME = "systemName";
+    public static final String AS400_INIT_USER_ID = "userID";
+    public static final String AS400_INIT_PASSWORD_PROPERTY = "as400.password";
     public static final String AS400_PCML_PCML_FILE_NAME = "pcmlFileName";
     public static final String AS400_PCML_PROGRAM_NAME = "programName";
     public static final String AS400_PCML_PROGRAM_INPUTS = "pcmlInputs";

@@ -45,14 +45,15 @@ public class AS400Utils {
     /**
      * Gets the input parameters from the soap body and converts them to a list of {@link PCMLInputParam}s.
      *
-     * @param synCtx The message context.
+     * @param messageContext The message context.
      * @param log    The logger object for logging.
      * @return A list of {@link PCMLInputParam}.
      */
-    public static List<PCMLInputParam> getInputParams(MessageContext synCtx, SynapseLog log) throws AS400PCMLConnectorException {
+    public static List<PCMLInputParam> getInputParameters(MessageContext messageContext, SynapseLog log) throws
+            AS400PCMLConnectorException {
         List<PCMLInputParam> inputParameters = new ArrayList<>();
         try {
-            String strPCMLObjects = (String) ConnectorUtils.lookupTemplateParamater(synCtx, AS400Constants
+            String strPCMLObjects = (String) ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants
                     .AS400_PCML_PROGRAM_INPUTS);
             if (null != strPCMLObjects && !strPCMLObjects.isEmpty()) {
                 OMElement sObjects = AXIOMUtil.stringToOM(strPCMLObjects);
@@ -62,22 +63,26 @@ public class AS400Utils {
                         OMElement pcmlObject = pcmlObjects.next();
                         if (AS400Constants.AS400_PCML_PROGRAM_INPUT.equals(pcmlObject.getLocalName())) {
                             // qualifiedName is a required attribute.
-                            String qualifiedName = pcmlObject.getAttributeValue(new QName(AS400Constants.AS400_PCML_PROGRAM_INPUT_QUALIFIED_NAME));
+                            String qualifiedName = pcmlObject.getAttributeValue(
+                                                    new QName(AS400Constants.AS400_PCML_PROGRAM_INPUT_QUALIFIED_NAME));
                             if (null != qualifiedName && !qualifiedName.trim().isEmpty()) {
                                 log.error("'" + AS400Constants.AS400_PCML_PROGRAM_INPUT_QUALIFIED_NAME + "' " +
-                                             "attribute not found for a " + AS400Constants.AS400_PCML_PROGRAM_INPUT +
-                                             ". Hence ignoring this parameter.");
+                                          "attribute not found for a " + AS400Constants.AS400_PCML_PROGRAM_INPUT +
+                                          ". Hence ignoring this parameter.");
                                 continue;
                             }
                             // indices are not a required attribute.
-                            int[] indices = getIndices(pcmlObject.getAttributeValue(new QName(AS400Constants.AS400_PCML_PROGRAM_INPUT_INDICES)), log);
+                            int[] indices = getIndices(pcmlObject.getAttributeValue(
+                                                    new QName(AS400Constants.AS400_PCML_PROGRAM_INPUT_INDICES)), log);
                             String value = pcmlObject.getText();
                             inputParameters.add(new PCMLInputParam(qualifiedName, indices, value));
                         } else {
-                            log.error("Invalid element found when parsing children of '" + AS400Constants
-                                    .AS400_PCML_PROGRAM_INPUTS + "'. Input parameters must have be made of '" +
-                                         AS400Constants.AS400_PCML_PROGRAM_INPUT + "' elements. But found '" + pcmlObject
-                                                 .getLocalName() + "'. Hence ignoring this parameter.");
+                            log.error("Invalid element found when parsing children of '" +
+                                      AS400Constants.AS400_PCML_PROGRAM_INPUTS +
+                                      "'. Input parameters must have be made of '" +
+                                      AS400Constants.AS400_PCML_PROGRAM_INPUT +
+                                      "' elements. But found '" + pcmlObject.getLocalName() +
+                                      "'. Hence ignoring this parameter.");
                         }
                     }
                 } else if (log.isTraceOrDebugEnabled()) {
@@ -108,7 +113,7 @@ public class AS400Utils {
      * @return An array of indices.
      */
     private static int[] getIndices(String indicesAsString, SynapseLog logger) {
-        int[] indices = null;
+        int[] indices;
         try {
             if (null != indicesAsString) {
                 String[] split = indicesAsString.split(",");
@@ -120,7 +125,9 @@ public class AS400Utils {
                 indices = null;
             }
         } catch (NumberFormatException e) {
-            logger.error("Invalid content found for indices. Make sure that indices attribute consists of integers separated by commas. Found '" + indicesAsString + "'.");
+            logger.error("Invalid content found for indices. Make sure that indices attribute consists of integers " +
+                                                            "separated by commas. Found '" + indicesAsString + "'.");
+            indices = null;
         }
 
         return indices;

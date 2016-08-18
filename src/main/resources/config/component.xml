@@ -16,11 +16,15 @@
    specific language governing permissions and limitations
    under the License.
 -->
-<component name="config" type="synapse/template" >
-    <subComponents> 
-		<component name="init" >
-	    		<file>init.xml</file>
-	    		<description>Init operation</description>
-		</component>
-    </subComponents>    
+<component name="config" type="synapse/template">
+    <subComponents>
+        <component name="init">
+            <file>init.xml</file>
+            <description>Initializes AS400 instance. Authenticates if credentials are provided.</description>
+        </component>
+        <component name="call">
+            <file>call.xml</file>
+            <description>Calls a program in the AS400 system.</description>
+        </component>
+    </subComponents>
 </component>

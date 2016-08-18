@@ -21,8 +21,8 @@
     <parameter name="userID"/>
     <parameter name="password"/>
     <sequence>
-        <property expression="$func:systemName" name="as400.pcml.systemName" scope="operation" type="STRING"/>
-        <property expression="$func:userID" name="as400.pcml.userID" scope="operation" type="STRING"/>
-        <property expression="$func:password" name="as400.pcml.password" scope="operation" type="STRING"/>
+        <!--Using a property to get password if secure vault is used-->
+        <property expression="$func:password" name="as400.password" scope="operation" type="STRING"/>
+        <class name="org.wso2.carbon.connector.as400.pcml.AS400Initialize"/>
     </sequence>
 </template>

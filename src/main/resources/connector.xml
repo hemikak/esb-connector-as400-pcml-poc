@@ -17,10 +17,9 @@
    under the License.
 -->
 <connector>
-    <component name="Sample" package="org.wso2.carbon.connector" >
-        <dependency component="config" />
-        <dependency component="sample" />
-        <description>wso2 sample connector library</description>
+    <component name="as400.pcml" package="org.wso2.carbon.connector">
+        <dependency component="config"/>
+        <description>PCML Connector for AS400</description>
     </component>
     <icon>icon/icon.png</icon>
 </connector>

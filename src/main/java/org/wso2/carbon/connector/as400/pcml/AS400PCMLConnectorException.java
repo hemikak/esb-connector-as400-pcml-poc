@@ -23,18 +23,31 @@ import com.ibm.as400.access.AS400Message;
 import java.util.Arrays;
 
 /**
- * Exception class for the connector
+ * Exception class for the connector.
  */
 public class AS400PCMLConnectorException extends Exception {
+
     /**
-     * A list of messages reveived when an as400 program call is unsuccessful.
+     * A list of messages received when an as400 program call is unsuccessful.
      */
     String as400messages;
 
+    /**
+     * Creates exception with a text and exception.
+     *
+     * @param message The text for the exception message.
+     * @param cause   The exception
+     */
     public AS400PCMLConnectorException(String message, Throwable cause) {
         super(message, cause);
     }
 
+    /**
+     * Creates an exception with AS400 messages received by calling a program.
+     *
+     * @param message       The text message for the exception.
+     * @param as400messages The list of messages created by the calling the server.
+     */
     public AS400PCMLConnectorException(String message, AS400Message[] as400messages) {
         super(message);
         this.as400messages = Arrays.toString(as400messages);
@@ -48,6 +61,9 @@ public class AS400PCMLConnectorException extends Exception {
         this.as400messages = Arrays.toString(as400messages);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return "AS400PCMLConnectorException{" +
