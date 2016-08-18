@@ -50,9 +50,12 @@ public class AS400Initialize extends AbstractConnector {
             Axis2MessageContext axis2smc = (Axis2MessageContext) messageContext;
 
             // Get properties that are required for logging in.
-            String systemName = (String) ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_INIT_SYSTEM_NAME) ;
-            String userID = (String) ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_INIT_USER_ID) ;
-            String password = (String) axis2smc.getAxis2MessageContext().getOperationContext().getProperty(AS400Constants.AS400_INIT_PASSWORD_PROPERTY);
+            String systemName = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
+                                                                                AS400Constants.AS400_INIT_SYSTEM_NAME);
+            String userID = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
+                                                                                    AS400Constants.AS400_INIT_USER_ID);
+            String password = (String) axis2smc.getAxis2MessageContext().getOperationContext().getProperty(
+                                                                        AS400Constants.AS400_INIT_PASSWORD_PROPERTY);
 
             if (log.isTraceOrDebugEnabled()) {
                 log.traceOrDebug("Creating AS400 Instance.");
