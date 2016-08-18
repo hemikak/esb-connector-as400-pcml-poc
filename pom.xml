@@ -24,7 +24,7 @@
     <artifactId>org.wso2.carbon.connector.as400.pcml</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
-    <name>WSO2 Carbon - Connector For AS400 PCML</name>
+    <name>WSO2 Carbon - PCML Connector For AS400</name>
     <url>http://wso2.org</url>
 
     <properties>
@@ -42,6 +42,7 @@
         <org.testng.version>6.1.1</org.testng.version>
         <integration.base.version>1.0.1</integration.base.version>
         <jt400.version>9.1</jt400.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
@@ -151,8 +152,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.0</version>
                 <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -176,6 +177,19 @@
                                     <outputDirectory>target/connector/dependencies</outputDirectory>
                                 </artifactItem>
                             </artifactItems>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-emma-dependencies</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/emma</outputDirectory>
+                            <includeTypes>jar</includeTypes>
+                            <includeArtifactIds>emma,org.wso2.carbon.automation.core
+                            </includeArtifactIds>
                         </configuration>
                     </execution>
                 </executions>
@@ -254,27 +268,9 @@
                 </configuration>
             </plugin>
             <plugin>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-emma-dependencies</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/emma</outputDirectory>
-                            <includeTypes>jar</includeTypes>
-                            <includeArtifactIds>emma,org.wso2.carbon.automation.core
-                            </includeArtifactIds>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-
+                <version>2.5.4</version>
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
@@ -310,7 +306,6 @@
                     </instructions>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
     <repositories>

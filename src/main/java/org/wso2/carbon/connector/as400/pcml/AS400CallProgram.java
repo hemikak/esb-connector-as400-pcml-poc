@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ *  WSO2 Inc. licenses this file to you under the Apache License,
+ *  Version 2.0 (the "License"); you may not use this file except
+ *  in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 package org.wso2.carbon.connector.as400.pcml;
 
 import com.ibm.as400.access.AS400;
@@ -22,6 +40,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+/**
+ * A connector component that calls an AS400 program using PCML.
+ */
 public class AS400CallProgram extends AbstractConnector {
     public void connect(MessageContext synCtx) throws ConnectException {
         SynapseLog log = getLog(synCtx);
@@ -33,6 +54,10 @@ public class AS400CallProgram extends AbstractConnector {
             String systemName = (String) axis2smc.getAxis2MessageContext().getOperationContext().getProperty(AS400Constants.AS400_PCML_INIT_SYSTEM_NAME);
             String userID = (String) axis2smc.getAxis2MessageContext().getOperationContext().getProperty(AS400Constants.AS400_PCML_INIT_USER_ID);
             String password = (String) axis2smc.getAxis2MessageContext().getOperationContext().getProperty(AS400Constants.AS400_PCML_INIT_PASSWORD);
+
+            if (log.isTraceOrDebugEnabled()) {
+                log.traceOrDebug("Authenticating with AS400.");
+            }
 
             // Initializing as400 instance
             as400 = new AS400(systemName, userID, password);
@@ -61,6 +86,10 @@ public class AS400CallProgram extends AbstractConnector {
                 }
             }
 
+            if (log.isTraceOrDebugEnabled()) {
+                log.traceOrDebug("Calling program '" + programName + "' in file '" + pcmlFileName + "'.");
+            }
+
             // Call the AS400 program
             boolean success = pcmlDocument.callProgram(programName);
             if (!success) {
@@ -70,7 +99,7 @@ public class AS400CallProgram extends AbstractConnector {
                 for (AS400Message message : msgs) {
                     errorMessage = errorMessage.append(message.getID()).append(" - ").append(message.getText()).append(System.lineSeparator());
                 }
-                throw new AS400PCMLConnectorException("Calling program '" + programName +"' was not successful.", msgs);
+                throw new AS400PCMLConnectorException("Calling program '" + programName + "' was not successful.", msgs);
             } else {
                 // Generate the XPCML document which consists of all input and output data
                 ByteArrayOutputStream xpcmlOutputStream = new ByteArrayOutputStream();
@@ -106,6 +135,9 @@ public class AS400CallProgram extends AbstractConnector {
             throw new SynapseException(xmlStreamException);
         } finally {
             if (null != as400 && as400.isConnected()) {
+                if (log.isTraceOrDebugEnabled()) {
+                    log.traceOrDebug("Disconnecting from all AS400 services.");
+                }
                 as400.disconnectAllServices();
             }
         }
