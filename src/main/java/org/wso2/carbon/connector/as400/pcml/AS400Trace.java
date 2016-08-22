@@ -46,7 +46,12 @@ public class AS400Trace extends AbstractConnector {
         SynapseLog log = getLog(messageContext);
         try {
 
-            Trace.setFileName(CarbonUtils.getCarbonLogsPath() + File.separator + "pcml-connector-logs.log");
+            String logFilePath = CarbonUtils.getCarbonLogsPath() + File.separator + "pcml-connector-logs.log";
+            if (null != Trace.getFileName() && logFilePath.equals(Trace.getFileName())) {
+                log.auditWarn("Changing log");
+            }
+            Trace.getFileName();
+            Trace.setFileName(logFilePath);
 
             Object conversionLevel = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_TRACE_CONVERSION);
             if (null != conversionLevel) {
