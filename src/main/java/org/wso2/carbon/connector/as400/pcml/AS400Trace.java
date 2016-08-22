@@ -51,27 +51,32 @@ public class AS400Trace extends AbstractConnector {
                 Trace.setFileName(logFilePath);
             }
 
-            Object conversionLevel = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_TRACE_CONVERSION);
+            Object conversionLevel = ConnectorUtils.lookupTemplateParamater(messageContext,
+                                                                                AS400Constants.AS400_TRACE_CONVERSION);
             if (null != conversionLevel) {
                 Trace.setTraceConversionOn(Boolean.parseBoolean((String)conversionLevel));
             }
 
-            Object datastreamLevel = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_TRACE_DATASTREAM);
+            Object datastreamLevel = ConnectorUtils.lookupTemplateParamater(messageContext,
+                                                                                AS400Constants.AS400_TRACE_DATASTREAM);
             if (null != datastreamLevel) {
                 Trace.setTraceDatastreamOn(Boolean.parseBoolean((String)datastreamLevel));
             }
 
-            Object diagnosticsLevel = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_TRACE_DIAGNOSTICS);
+            Object diagnosticsLevel = ConnectorUtils.lookupTemplateParamater(messageContext,
+                                                                                AS400Constants.AS400_TRACE_DIAGNOSTICS);
             if (null != diagnosticsLevel) {
                 Trace.setTraceDiagnosticOn(Boolean.parseBoolean((String)diagnosticsLevel));
             }
 
-            Object errorLevel = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_TRACE_ERROR);
+            Object errorLevel = ConnectorUtils.lookupTemplateParamater(messageContext,
+                                                                                    AS400Constants.AS400_TRACE_ERROR);
             if (null != errorLevel) {
                 Trace.setTraceErrorOn(Boolean.parseBoolean((String)errorLevel));
             }
 
-            Object informationLevel = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_TRACE_INFORMATION);
+            Object informationLevel = ConnectorUtils.lookupTemplateParamater(messageContext,
+                                                                                AS400Constants.AS400_TRACE_INFORMATION);
             if (null != informationLevel) {
                 Trace.setTraceInformationOn(Boolean.parseBoolean((String)informationLevel));
             }
@@ -81,20 +86,21 @@ public class AS400Trace extends AbstractConnector {
                 Trace.setTracePCMLOn(Boolean.parseBoolean((String)pcmlLevel));
             }
 
-            Object warningLevel = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_TRACE_WARNING);
+            Object warningLevel = ConnectorUtils.lookupTemplateParamater(messageContext,
+                                                                                    AS400Constants.AS400_TRACE_WARNING);
             if (null != warningLevel) {
                 Trace.setTraceWarningOn(Boolean.parseBoolean((String) warningLevel));
             }
 
             Object allLevel = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_TRACE_ALL);
             if (null != allLevel) {
-                Trace.setTraceConversionOn(Boolean.parseBoolean((String)conversionLevel));
-                Trace.setTraceDatastreamOn(Boolean.parseBoolean((String)datastreamLevel));
-                Trace.setTraceDiagnosticOn(Boolean.parseBoolean((String)diagnosticsLevel));
-                Trace.setTraceErrorOn(Boolean.parseBoolean((String)errorLevel));
-                Trace.setTraceInformationOn(Boolean.parseBoolean((String)informationLevel));
-                Trace.setTracePCMLOn(Boolean.parseBoolean((String)pcmlLevel));
-                Trace.setTraceWarningOn(Boolean.parseBoolean((String)warningLevel));
+                Trace.setTraceConversionOn(Boolean.parseBoolean((String)allLevel));
+                Trace.setTraceDatastreamOn(Boolean.parseBoolean((String)allLevel));
+                Trace.setTraceDiagnosticOn(Boolean.parseBoolean((String)allLevel));
+                Trace.setTraceErrorOn(Boolean.parseBoolean((String)allLevel));
+                Trace.setTraceInformationOn(Boolean.parseBoolean((String)allLevel));
+                Trace.setTracePCMLOn(Boolean.parseBoolean((String)allLevel));
+                Trace.setTraceWarningOn(Boolean.parseBoolean((String)allLevel));
             }
 
             // Logging for debugging.

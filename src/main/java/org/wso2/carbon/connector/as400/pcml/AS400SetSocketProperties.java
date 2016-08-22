@@ -41,43 +41,50 @@ public class AS400SetSocketProperties extends AbstractConnector {
         SocketProperties socketProperties = new SocketProperties();
         try {
             // Sets keepalive value
-            Object keepAlive = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_SOCKET_PROPERTY_KEEP_ALIVE);
+            Object keepAlive = ConnectorUtils.lookupTemplateParamater(messageContext,
+                                                                    AS400Constants.AS400_SOCKET_PROPERTY_KEEP_ALIVE);
             if (null != keepAlive) {
                 socketProperties.setKeepAlive(Boolean.parseBoolean((String)keepAlive));
             }
 
             // Sets login timeout
-            Object loginTimeout = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_SOCKET_PROPERTY_LOGIN_TIMEOUT);
+            Object loginTimeout = ConnectorUtils.lookupTemplateParamater(messageContext,
+                                                                    AS400Constants.AS400_SOCKET_PROPERTY_LOGIN_TIMEOUT);
             if (null != loginTimeout) {
                 socketProperties.setLoginTimeout(Integer.parseInt((String)loginTimeout));
             }
 
             // Sets receive buffer size
-            Object receiveBufferSize = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_SOCKET_PROPERTY_RECEIVE_BUFFER_SIZE);
+            Object receiveBufferSize = ConnectorUtils.lookupTemplateParamater(messageContext,
+                                                            AS400Constants.AS400_SOCKET_PROPERTY_RECEIVE_BUFFER_SIZE);
             if (null != receiveBufferSize) {
                 socketProperties.setReceiveBufferSize(Integer.parseInt((String)receiveBufferSize));
             }
 
             // Sets send buffer size
-            Object sendBufferSize = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_SOCKET_PROPERTY_SEND_BUFFER_SIZE);
+            Object sendBufferSize = ConnectorUtils.lookupTemplateParamater(messageContext,
+                                                                AS400Constants.AS400_SOCKET_PROPERTY_SEND_BUFFER_SIZE);
             if (null != sendBufferSize) {
                 socketProperties.setSendBufferSize(Integer.parseInt((String)sendBufferSize));
             }
 
             // Sets socket linger value
-            Object socketLinger = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_SOCKET_PROPERTY_SOCKET_LINGER);
+            Object socketLinger = ConnectorUtils.lookupTemplateParamater(messageContext,
+                                                                    AS400Constants.AS400_SOCKET_PROPERTY_SOCKET_LINGER);
             if (null != socketLinger) {
                 socketProperties.setSoLinger(Integer.parseInt((String)socketLinger));
             }
 
             // Sets socket timeout value
-            Object socketTimeout = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_SOCKET_PROPERTY_SOCKET_TIMEOUT);
+            Object socketTimeout = ConnectorUtils.lookupTemplateParamater(messageContext,
+                                                                AS400Constants.AS400_SOCKET_PROPERTY_SOCKET_TIMEOUT);
             if (null != socketTimeout) {
                 socketProperties.setSoTimeout(Integer.parseInt((String)socketTimeout));
             }
 
             // Sets TCP no delay
-            Object tcpNoDelay = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_SOCKET_PROPERTY_TCP_NO_DELAY);
+            Object tcpNoDelay = ConnectorUtils.lookupTemplateParamater(messageContext,
+                                                                    AS400Constants.AS400_SOCKET_PROPERTY_TCP_NO_DELAY);
             if (null != tcpNoDelay) {
                 socketProperties.setTcpNoDelay(Boolean.parseBoolean((String)tcpNoDelay));
             }

@@ -19,6 +19,8 @@
 package org.wso2.carbon.connector.as400.pcml.test.integration;
 
 import com.ibm.as400.access.Trace;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import javax.xml.stream.XMLStreamException;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -28,25 +30,28 @@ import org.wso2.connector.integration.test.base.ConnectorIntegrationTestBase;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Tests related to trace synapse that uses AS400 tracing features.
  */
-public class AS400PCMLTraceTest extends ConnectorIntegrationTestBase {
+public class AS400TraceTest extends ConnectorIntegrationTestBase {
 
     private Map<String, String> esbRequestHeadersMap = new HashMap<>();
 
     /**
      * Uploads the connector and adds request headers needed for requests.
+     *
      * @throws Exception Error occurred while uploading the connector.
      */
     @BeforeClass(alwaysRun = true)
     public void setEnvironment() throws Exception {
         init("as400-pcml-connector-1.0.0-SNAPSHOT");
-        esbRequestHeadersMap.put("Accept-Charset", "UTF-8");
-        esbRequestHeadersMap.put("Content-Type", "application/xml");
+        esbRequestHeadersMap.put(HttpHeaders.ACCEPT_CHARSET, StandardCharsets.UTF_8.displayName());
+        esbRequestHeadersMap.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML);
     }
 
     /**
@@ -85,7 +90,8 @@ public class AS400PCMLTraceTest extends ConnectorIntegrationTestBase {
         Assert.assertTrue(!Trace.isTracePCMLOn(), "PCML trace level is enabled by default.");
         Assert.assertTrue(!Trace.isTraceWarningOn(), "Warning trace level is enabled by default.");
 
-        Assert.assertEquals(Trace.getFileName(), AS400Constants.AS400_DEFAULT_LOG_PATH, "Log file path has been set to a different path.");
+        Assert.assertEquals(Trace.getFileName(), AS400Constants.AS400_DEFAULT_LOG_PATH, "Log file path has been set " +
+                                                                                                "to a different path.");
         File logFile = new File(AS400Constants.AS400_DEFAULT_LOG_PATH);
         Assert.assertTrue(logFile.exists(), "Log file has not been created.");
     }
