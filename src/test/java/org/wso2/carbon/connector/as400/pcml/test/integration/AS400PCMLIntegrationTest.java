@@ -45,6 +45,6 @@ public class AS400PCMLIntegrationTest extends ConnectorIntegrationTestBase {
     public void testSample() throws Exception {
         log.info("Successfully tested");
         RestResponse<JSONObject> esbRestResponse =
-                sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "sampleRequest.json");
+                sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "invoker.xml");
     }
 }

@@ -25,9 +25,7 @@ import org.apache.synapse.SynapseLog;
 import org.wso2.carbon.connector.core.AbstractConnector;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.core.util.ConnectorUtils;
-import org.wso2.carbon.utils.CarbonUtils;
 
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -46,12 +44,12 @@ public class AS400Trace extends AbstractConnector {
         SynapseLog log = getLog(messageContext);
         try {
 
-            String logFilePath = CarbonUtils.getCarbonLogsPath() + File.separator + "pcml-connector-logs.log";
-            if (null != Trace.getFileName() && logFilePath.equals(Trace.getFileName())) {
-                log.auditWarn("Changing log");
+            String logFilePath = AS400Constants.AS400_DEFAULT_LOG_PATH;
+            if (null != Trace.getFileName() && !logFilePath.equals(Trace.getFileName())) {
+                log.auditWarn("Changing AS400 logs path to : " + logFilePath);
+            } else {
+                Trace.setFileName(logFilePath);
             }
-            Trace.getFileName();
-            Trace.setFileName(logFilePath);
 
             Object conversionLevel = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_TRACE_CONVERSION);
             if (null != conversionLevel) {
@@ -85,12 +83,18 @@ public class AS400Trace extends AbstractConnector {
 
             Object warningLevel = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_TRACE_WARNING);
             if (null != warningLevel) {
-                Trace.setTraceWarningOn(Boolean.parseBoolean((String)warningLevel));
+                Trace.setTraceWarningOn(Boolean.parseBoolean((String) warningLevel));
             }
 
             Object allLevel = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_TRACE_ALL);
             if (null != allLevel) {
-                Trace.setTraceAllOn(Boolean.parseBoolean((String)allLevel));
+                Trace.setTraceConversionOn(Boolean.parseBoolean((String)conversionLevel));
+                Trace.setTraceDatastreamOn(Boolean.parseBoolean((String)datastreamLevel));
+                Trace.setTraceDiagnosticOn(Boolean.parseBoolean((String)diagnosticsLevel));
+                Trace.setTraceErrorOn(Boolean.parseBoolean((String)errorLevel));
+                Trace.setTraceInformationOn(Boolean.parseBoolean((String)informationLevel));
+                Trace.setTracePCMLOn(Boolean.parseBoolean((String)pcmlLevel));
+                Trace.setTraceWarningOn(Boolean.parseBoolean((String)warningLevel));
             }
 
             // Logging for debugging.
@@ -102,7 +106,6 @@ public class AS400Trace extends AbstractConnector {
                 log.traceOrDebug("Log level Information : " + Trace.isTraceInformationOn());
                 log.traceOrDebug("Log level PCML : " + Trace.isTracePCMLOn());
                 log.traceOrDebug("Log level Warning : " + Trace.isTraceWarningOn());
-                log.traceOrDebug("Log level All : " + Trace.isTraceAllOn());
             }
         } catch(IOException ioException) {
             // Error occurred when setting logging file path.

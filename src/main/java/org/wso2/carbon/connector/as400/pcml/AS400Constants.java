@@ -18,6 +18,10 @@
 
 package org.wso2.carbon.connector.as400.pcml;
 
+import org.wso2.carbon.utils.CarbonUtils;
+
+import java.io.File;
+
 /**
  * Constants for the connector.
  */
@@ -54,5 +58,7 @@ public class AS400Constants {
     public static final String AS400_TRACE_PCML = "pcml";
     public static final String AS400_TRACE_WARNING = "warning";
     public static final String AS400_TRACE_ALL = "all";
-
+    // Default log file path
+    public static final String AS400_DEFAULT_LOG_PATH = CarbonUtils.getCarbonLogsPath() + File.separator +
+                                                                                            "pcml-connector-logs.log";
 }
