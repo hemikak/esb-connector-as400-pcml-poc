@@ -27,6 +27,8 @@ import java.util.Arrays;
  */
 public class AS400PCMLConnectorException extends Exception {
 
+    private static final long serialVersionUID = 3998762751313397184L;
+    
     /**
      * A list of messages received when an as400 program call is unsuccessful.
      */
@@ -51,6 +53,15 @@ public class AS400PCMLConnectorException extends Exception {
     public AS400PCMLConnectorException(String message, AS400Message[] as400messages) {
         super(message);
         this.as400messages = Arrays.toString(as400messages);
+    }
+
+    /**
+     * Creates an exception with a message.
+     *
+     * @param message The message content.
+     */
+    public AS400PCMLConnectorException(String message) {
+        super(message);
     }
 
     public String getAS400messages() {

@@ -17,10 +17,10 @@
  ~  under the License.
 -->
 
-<template name="callAPCMLProgram" xmlns="http://ws.apache.org/ns/synapse">
+<template name="call" xmlns="http://ws.apache.org/ns/synapse">
     <parameter name="pcmlFileName" description="The name of the program to call"/>
     <parameter name="programName" description="The name of the program to call"/>
-    <parameter name="inputParams" description="The input parameters for the PCML"/>
+    <parameter name="pcmlInputs" description="The input parameters for the PCML"/>
     <sequence>
         <class name="org.wso2.carbon.connector.as400.pcml.AS400CallProgram"/>
     </sequence>

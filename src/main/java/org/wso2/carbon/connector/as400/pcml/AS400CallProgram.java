@@ -20,9 +20,11 @@ package org.wso2.carbon.connector.as400.pcml;
 
 import com.ibm.as400.access.AS400;
 import com.ibm.as400.access.AS400Message;
+import com.ibm.as400.access.ExtendedIllegalArgumentException;
 import com.ibm.as400.data.PcmlException;
 import com.ibm.as400.data.ProgramCallDocument;
 import com.ibm.as400.data.XmlException;
+import javax.xml.stream.XMLStreamException;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.synapse.MessageContext;
@@ -36,7 +38,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import javax.xml.stream.XMLStreamException;
 
 /**
  * A connector component that calls an AS400 program using PCML.
@@ -46,7 +47,7 @@ public class AS400CallProgram extends AbstractConnector {
     /**
      * {@inheritDoc}
      * <p>
-     *     Calls a program in the AS400 server using PCML. The input parameters are take through the soap body of the
+     *     Calls a program in the AS400 server using PCML. The input parameters are taken through the soap body of the
      *     message context.
      * </p>
      */
@@ -55,14 +56,32 @@ public class AS400CallProgram extends AbstractConnector {
         SynapseLog log = getLog(messageContext);
         AS400 as400 = null;
         try {
-            as400 = (AS400) messageContext.getProperty(AS400Constants.AS400_INSTANCE);
+            Object as400InstanceProperty = messageContext.getProperty(AS400Constants.AS400_INSTANCE);
+            if (null != as400InstanceProperty) {
+                as400 = (AS400) as400InstanceProperty;
+            } else {
+                throw new AS400PCMLConnectorException("Unable to find an AS400 instance to call program. Use the " +
+                                                                    "'init' mediator to create an AS400 instance.");
+            }
+
+            Object pcmlFileNameParameter = ConnectorUtils.lookupTemplateParamater(messageContext,
+                                                                                AS400Constants.AS400_PCML_FILE_NAME);
+            if (null == pcmlFileNameParameter) {
+                throw new AS400PCMLConnectorException("A PCML file name could not be found as a parameter to call a " +
+                                                                                                            "program.");
+            }
 
             // Get PCML source file name
-            String pcmlFileName = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
-                                                                            AS400Constants.AS400_PCML_PCML_FILE_NAME);
-            // Get program name to call
-            String programName = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
+            String pcmlFileName = (String) pcmlFileNameParameter;
+
+            Object pcmlProgramNameParameter = ConnectorUtils.lookupTemplateParamater(messageContext,
                                                                                 AS400Constants.AS400_PCML_PROGRAM_NAME);
+            if (null == pcmlProgramNameParameter) {
+                throw new AS400PCMLConnectorException("A program name was not specified to call.");
+            }
+
+            // Get program name to call
+            String programName = (String) pcmlProgramNameParameter;
 
             // Create program document with the given PCML source file
             ProgramCallDocument pcmlDocument = new ProgramCallDocument(as400, pcmlFileName);
@@ -100,11 +119,12 @@ public class AS400CallProgram extends AbstractConnector {
                 throw new AS400PCMLConnectorException("Calling program '" + programName +
                                                                                         "' was not successful.", msgs);
             } else {
+                log.auditLog("Calling program '" + programName + "' is successful.");
                 // Generate the XPCML document which consists of all input and output data
                 ByteArrayOutputStream xpcmlOutputStream = new ByteArrayOutputStream();
                 pcmlDocument.generateXPCML(programName, xpcmlOutputStream);
-                OMElement omElement =
-                                    AXIOMUtil.stringToOM(xpcmlOutputStream.toString(StandardCharsets.UTF_8.toString()));
+                OMElement omElement = AXIOMUtil.stringToOM(xpcmlOutputStream.toString(
+                                                                                    StandardCharsets.UTF_8.toString()));
 
                 // Adding output content to soap body
                 messageContext.getEnvelope().getBody().addChild(omElement);
@@ -130,11 +150,14 @@ public class AS400CallProgram extends AbstractConnector {
             log.error(xmlStreamException);
             AS400Utils.handleException(xmlStreamException, "204", messageContext);
             throw new SynapseException(xmlStreamException);
+        } catch (ExtendedIllegalArgumentException extendedIllegalArgumentException) {
+            // Invalid arguments are passed to the input parameters
+            log.error(extendedIllegalArgumentException);
+            AS400Utils.handleException(extendedIllegalArgumentException, "500", messageContext);
+            throw new SynapseException(extendedIllegalArgumentException);
         } finally {
             if (null != as400 && as400.isConnected()) {
-                if (log.isTraceOrDebugEnabled()) {
-                    log.traceOrDebug("Disconnecting from all AS400 services.");
-                }
+                log.auditLog("Disconnecting from all AS400 services.");
                 as400.disconnectAllServices();
             }
         }

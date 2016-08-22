@@ -18,6 +18,10 @@
 -->
 <component name="config" type="synapse/template">
     <subComponents>
+        <component name="socket">
+            <file>socket.xml</file>
+            <description>Creates socket properties instance for a AS400 instance.</description>
+        </component>
         <component name="init">
             <file>init.xml</file>
             <description>Initializes AS400 instance. Authenticates if credentials are provided.</description>
@@ -25,6 +29,10 @@
         <component name="call">
             <file>call.xml</file>
             <description>Calls a program in the AS400 system.</description>
+        </component>
+        <component name="trace">
+            <file>trace.xml</file>
+            <description>Modify trace log levels.</description>
         </component>
     </subComponents>
 </component>

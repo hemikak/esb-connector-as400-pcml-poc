@@ -19,6 +19,7 @@
 package org.wso2.carbon.connector.as400.pcml;
 
 import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
@@ -58,20 +59,20 @@ public class AS400Utils {
             if (null != strPCMLObjects && !strPCMLObjects.isEmpty()) {
                 OMElement sObjects = AXIOMUtil.stringToOM(strPCMLObjects);
                 if (null != sObjects) {
-                    Iterator<OMElement> pcmlObjects = sObjects.getChildElements();
+                    Iterator pcmlObjects = sObjects.getChildElements();
                     while (pcmlObjects.hasNext()) {
-                        OMElement pcmlObject = pcmlObjects.next();
+                        OMElement pcmlObject = (OMElement) pcmlObjects.next();
                         if (AS400Constants.AS400_PCML_PROGRAM_INPUT.equals(pcmlObject.getLocalName())) {
                             // qualifiedName is a required attribute.
                             String qualifiedName = pcmlObject.getAttributeValue(
                                                     new QName(AS400Constants.AS400_PCML_PROGRAM_INPUT_QUALIFIED_NAME));
-                            if (null != qualifiedName && !qualifiedName.trim().isEmpty()) {
+                            if (null == qualifiedName || qualifiedName.trim().isEmpty()) {
                                 log.error("'" + AS400Constants.AS400_PCML_PROGRAM_INPUT_QUALIFIED_NAME + "' " +
                                           "attribute not found for a " + AS400Constants.AS400_PCML_PROGRAM_INPUT +
-                                          ". Hence ignoring this parameter.");
+                                          ". Hence ignoring this input parameter.");
                                 continue;
                             }
-                            // indices are not a required attribute.
+                            // indices is not a required attribute.
                             int[] indices = getIndices(pcmlObject.getAttributeValue(
                                                     new QName(AS400Constants.AS400_PCML_PROGRAM_INPUT_INDICES)), log);
                             String value = pcmlObject.getText();
@@ -82,7 +83,7 @@ public class AS400Utils {
                                       "'. Input parameters must have be made of '" +
                                       AS400Constants.AS400_PCML_PROGRAM_INPUT +
                                       "' elements. But found '" + pcmlObject.getLocalName() +
-                                      "'. Hence ignoring this parameter.");
+                                      "'. Hence ignoring this input parameter.");
                         }
                     }
                 } else if (log.isTraceOrDebugEnabled()) {

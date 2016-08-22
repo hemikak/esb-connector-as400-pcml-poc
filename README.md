@@ -10,16 +10,6 @@ The AS400 PCML(Program Call Markup Language) connector allows to invoke an progr
 
 mvn clean install
 
-### Finding IBM AS400/iSeries system name
-The SQL DB server name and system name are not the same. But by default they are the same.
-Use a CL(Control Language) program to retrieve the system name.
-```
-dcl &SysName *char
-rtvneta sysname( &SysName )
-```
-
-See more information at [\[1\]](get-ibm-i-system-name-using-rpgle-or-sqlrpgle)
-
 ### Synapse Syntax
 
 ### How You Can Contribute

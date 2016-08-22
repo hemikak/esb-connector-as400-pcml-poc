@@ -70,7 +70,7 @@ public class PCMLInputParam {
      */
     @Override
     public String toString() {
-        return "PCMLInputParam{" +
+        return "Param{" +
                "qualifiedName='" + qualifiedName + '\'' +
                ", indices=" + Arrays.toString(indices) +
                ", value='" + value + '\'' +

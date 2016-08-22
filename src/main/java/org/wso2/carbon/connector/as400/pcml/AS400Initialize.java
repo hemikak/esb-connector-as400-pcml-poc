@@ -19,6 +19,7 @@ package org.wso2.carbon.connector.as400.pcml;
 
 import com.ibm.as400.access.AS400;
 import com.ibm.as400.access.AS400SecurityException;
+import com.ibm.as400.access.SocketProperties;
 import org.apache.synapse.MessageContext;
 import org.apache.synapse.SynapseException;
 import org.apache.synapse.SynapseLog;
@@ -46,20 +47,29 @@ public class AS400Initialize extends AbstractConnector {
     public void connect(MessageContext messageContext) throws ConnectException {
         SynapseLog log = getLog(messageContext);
         AS400 as400 = null;
+        String systemName = "";
+        String userID = "";
+        String password = "";
         try {
             Axis2MessageContext axis2smc = (Axis2MessageContext) messageContext;
 
             // Get properties that are required for logging in.
-            String systemName = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
-                                                                                AS400Constants.AS400_INIT_SYSTEM_NAME);
-            String userID = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
-                                                                                    AS400Constants.AS400_INIT_USER_ID);
-            String password = (String) axis2smc.getAxis2MessageContext().getOperationContext().getProperty(
-                                                                        AS400Constants.AS400_INIT_PASSWORD_PROPERTY);
-
-            if (log.isTraceOrDebugEnabled()) {
-                log.traceOrDebug("Creating AS400 Instance.");
+            Object systemNameParameter = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_INIT_SYSTEM_NAME);
+            if (null != systemNameParameter) {
+                systemName = (String)systemNameParameter;
             }
+
+            Object userIDParameter = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_INIT_USER_ID);
+            if (null != userIDParameter) {
+                userID = (String) userIDParameter;
+            }
+
+            Object passwordProperty = axis2smc.getAxis2MessageContext().getOperationContext().getProperty(AS400Constants.AS400_INIT_PASSWORD_PROPERTY);
+            if (null != passwordProperty) {
+                password = (String) passwordProperty;
+            }
+
+            log.auditLog("Creating an AS400 Instance.");
 
             // Initializing as400 instance.
             as400 = new AS400(systemName, userID, password);
@@ -67,10 +77,17 @@ public class AS400Initialize extends AbstractConnector {
             // Disabling GUI feature.
             as400.setGuiAvailable(false);
 
+            // Setting socket properties to the as400 instance if socket properties are available.
+            Object socketProperties = messageContext.getProperty(AS400Constants.AS400_SOCKET_PROPERTIES);
+            if (null != socketProperties) {
+                as400.setSocketProperties((SocketProperties)socketProperties);
+            }
+
             // Authenticating user if user ID and password are set.
-            if (null != userID && !userID.isEmpty() && null != password && !password.isEmpty()) {
-                log.auditLog("Authenticating with AS400...");
+            if (!userID.isEmpty() && !password.isEmpty()) {
+                log.auditLog("Authenticating with AS400 server...");
                 as400.authenticate(userID, password);
+                log.auditLog("Authentication success...");
             }
 
         } catch (AS400SecurityException as400SecurityException){
