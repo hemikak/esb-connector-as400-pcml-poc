@@ -56,7 +56,13 @@ public class AS400CallProgram extends AbstractConnector {
         SynapseLog log = getLog(messageContext);
         AS400 as400 = null;
         try {
-            as400 = (AS400) messageContext.getProperty(AS400Constants.AS400_INSTANCE);
+            Object as400InstanceProperty = messageContext.getProperty(AS400Constants.AS400_INSTANCE);
+            if (null != as400InstanceProperty) {
+                as400 = (AS400) as400InstanceProperty;
+            } else {
+                throw new AS400PCMLConnectorException("Unable to find an AS400 instance to call program. Use the " +
+                                                                    "'init' mediator to create an AS400 instance.");
+            }
 
             Object pcmlFileNameParameter = ConnectorUtils.lookupTemplateParamater(messageContext,
                                                                                 AS400Constants.AS400_PCML_FILE_NAME);

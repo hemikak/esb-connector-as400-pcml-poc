@@ -69,9 +69,7 @@ public class AS400Initialize extends AbstractConnector {
                 password = (String) passwordProperty;
             }
 
-            if (log.isTraceOrDebugEnabled()) {
-                log.traceOrDebug("Creating AS400 Instance.");
-            }
+            log.auditLog("Creating an AS400 Instance.");
 
             // Initializing as400 instance.
             as400 = new AS400(systemName, userID, password);
@@ -79,7 +77,7 @@ public class AS400Initialize extends AbstractConnector {
             // Disabling GUI feature.
             as400.setGuiAvailable(false);
 
-            // Setting socket properties to the as400 instance if socket properties are available
+            // Setting socket properties to the as400 instance if socket properties are available.
             Object socketProperties = messageContext.getProperty(AS400Constants.AS400_SOCKET_PROPERTIES);
             if (null != socketProperties) {
                 as400.setSocketProperties((SocketProperties)socketProperties);
@@ -87,7 +85,7 @@ public class AS400Initialize extends AbstractConnector {
 
             // Authenticating user if user ID and password are set.
             if (!userID.isEmpty() && !password.isEmpty()) {
-                log.auditLog("Authenticating with AS400...");
+                log.auditLog("Authenticating with AS400 server...");
                 as400.authenticate(userID, password);
                 log.auditLog("Authentication success...");
             }

@@ -18,6 +18,7 @@
 
 package org.wso2.carbon.connector.as400.pcml;
 
+import com.ibm.as400.access.AS400;
 import com.ibm.as400.access.SocketProperties;
 import org.apache.synapse.MessageContext;
 import org.apache.synapse.SynapseException;
@@ -81,6 +82,12 @@ public class AS400SetSocketProperties extends AbstractConnector {
                 socketProperties.setTcpNoDelay(Boolean.parseBoolean((String)tcpNoDelay));
             }
 
+            // Sets socket properties to the AS400 instance if it exists.
+            Object as400InstanceProperty = messageContext.getProperty(AS400Constants.AS400_INSTANCE);
+            if (null != as400InstanceProperty) {
+                AS400 as400 = (AS400) as400InstanceProperty;
+                as400.setSocketProperties(socketProperties);
+            }
         } catch (Exception exception) {
             // Error occurred when setting socket properties
             log.error(exception);

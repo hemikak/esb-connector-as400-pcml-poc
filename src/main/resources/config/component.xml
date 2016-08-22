@@ -30,5 +30,9 @@
             <file>call.xml</file>
             <description>Calls a program in the AS400 system.</description>
         </component>
+        <component name="trace">
+            <file>trace.xml</file>
+            <description>Modify trace log levels.</description>
+        </component>
     </subComponents>
 </component>

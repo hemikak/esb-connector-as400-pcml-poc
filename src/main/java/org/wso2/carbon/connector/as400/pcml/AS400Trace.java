@@ -1,0 +1,114 @@
+/*
+ * Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ *  WSO2 Inc. licenses this file to you under the Apache License,
+ *  Version 2.0 (the "License"); you may not use this file except
+ *  in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+package org.wso2.carbon.connector.as400.pcml;
+
+import com.ibm.as400.access.Trace;
+import org.apache.synapse.MessageContext;
+import org.apache.synapse.SynapseException;
+import org.apache.synapse.SynapseLog;
+import org.wso2.carbon.connector.core.AbstractConnector;
+import org.wso2.carbon.connector.core.ConnectException;
+import org.wso2.carbon.connector.core.util.ConnectorUtils;
+import org.wso2.carbon.utils.CarbonUtils;
+
+import java.io.File;
+import java.io.IOException;
+
+/**
+ * A connector component that enables/disables different log levels in AS400 communication.
+ */
+public class AS400Trace extends AbstractConnector {
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     *     Updated different levels of logs in AS400 server communication.
+     * </p>
+     */
+    @Override
+    public void connect(MessageContext messageContext) throws ConnectException {
+        SynapseLog log = getLog(messageContext);
+        try {
+
+            Trace.setFileName(CarbonUtils.getCarbonLogsPath() + File.separator + "pcml-connector-logs.log");
+
+            Object conversionLevel = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_TRACE_CONVERSION);
+            if (null != conversionLevel) {
+                Trace.setTraceConversionOn(Boolean.parseBoolean((String)conversionLevel));
+            }
+
+            Object datastreamLevel = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_TRACE_DATASTREAM);
+            if (null != datastreamLevel) {
+                Trace.setTraceDatastreamOn(Boolean.parseBoolean((String)datastreamLevel));
+            }
+
+            Object diagnosticsLevel = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_TRACE_DIAGNOSTICS);
+            if (null != diagnosticsLevel) {
+                Trace.setTraceDiagnosticOn(Boolean.parseBoolean((String)diagnosticsLevel));
+            }
+
+            Object errorLevel = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_TRACE_ERROR);
+            if (null != errorLevel) {
+                Trace.setTraceErrorOn(Boolean.parseBoolean((String)errorLevel));
+            }
+
+            Object informationLevel = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_TRACE_INFORMATION);
+            if (null != informationLevel) {
+                Trace.setTraceInformationOn(Boolean.parseBoolean((String)informationLevel));
+            }
+
+            Object pcmlLevel = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_TRACE_PCML);
+            if (null != pcmlLevel) {
+                Trace.setTracePCMLOn(Boolean.parseBoolean((String)pcmlLevel));
+            }
+
+            Object warningLevel = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_TRACE_WARNING);
+            if (null != warningLevel) {
+                Trace.setTraceWarningOn(Boolean.parseBoolean((String)warningLevel));
+            }
+
+            Object allLevel = ConnectorUtils.lookupTemplateParamater(messageContext, AS400Constants.AS400_TRACE_ALL);
+            if (null != allLevel) {
+                Trace.setTraceAllOn(Boolean.parseBoolean((String)allLevel));
+            }
+
+            // Logging for debugging.
+            if (log.isTraceOrDebugEnabled()) {
+                log.traceOrDebug("Log level Conversion : " + Trace.isTraceConversionOn());
+                log.traceOrDebug("Log level Datastream : " + Trace.isTraceDatastreamOn());
+                log.traceOrDebug("Log level Diagnostics : " + Trace.isTraceDiagnosticOn());
+                log.traceOrDebug("Log level Error : " + Trace.isTraceErrorOn());
+                log.traceOrDebug("Log level Information : " + Trace.isTraceInformationOn());
+                log.traceOrDebug("Log level PCML : " + Trace.isTracePCMLOn());
+                log.traceOrDebug("Log level Warning : " + Trace.isTraceWarningOn());
+                log.traceOrDebug("Log level All : " + Trace.isTraceAllOn());
+            }
+        } catch(IOException ioException) {
+            // Error occurred when setting logging file path.
+            log.error(ioException);
+            AS400Utils.handleException(ioException, "207", messageContext);
+            throw new SynapseException(ioException);
+        } catch (Exception exception) {
+            // Error occurred when setting socket properties
+            log.error(exception);
+            AS400Utils.handleException(exception, "203", messageContext);
+            throw new SynapseException(exception);
+        }
+    }
+}
