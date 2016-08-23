@@ -22,6 +22,6 @@
     <parameter name="programName" description="The name of the program to call"/>
     <parameter name="pcmlInputs" description="The input parameters for the PCML"/>
     <sequence>
-        <class name="org.wso2.carbon.connector.as400.pcml.AS400CallProgram"/>
+        <class name="org.wso2.carbon.connector.pcml.AS400CallProgram"/>
     </sequence>
 </template>

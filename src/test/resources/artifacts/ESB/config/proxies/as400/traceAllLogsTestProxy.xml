@@ -22,9 +22,9 @@
        startOnLoad="true">
     <target>
         <inSequence>
-            <as400.pcml.trace>
+            <pcml.trace>
                 <all>true</all>
-            </as400.pcml.trace>
+            </pcml.trace>
             <log level="full"/>
             <respond/>
         </inSequence>

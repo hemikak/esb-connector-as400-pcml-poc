@@ -17,7 +17,7 @@
    under the License.
 -->
 <connector>
-    <component name="as400.pcml" package="org.wso2.carbon.connector">
+    <component name="pcml" package="org.wso2.carbon.connector">
         <dependency component="config"/>
         <description>PCML Connector for AS400</description>
     </component>

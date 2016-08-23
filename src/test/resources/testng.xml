@@ -27,7 +27,7 @@
     </listeners>
     <test name="AS400-PCML-Connector-Integration-Test" preserve-order="true" verbose="2">
         <packages>
-            <package name="org.wso2.carbon.connector.as400.pcml.test.integration"/>
+            <package name="org.wso2.carbon.connector.pcml.test.integration"/>
         </packages>
     </test>
 </suite>

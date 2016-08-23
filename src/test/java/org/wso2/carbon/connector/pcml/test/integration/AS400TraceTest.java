@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.carbon.connector.as400.pcml.test.integration;
+package org.wso2.carbon.connector.pcml.test.integration;
 
 import com.ibm.as400.access.Trace;
 import javax.ws.rs.core.HttpHeaders;
@@ -25,12 +25,11 @@ import javax.xml.stream.XMLStreamException;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import org.wso2.carbon.connector.as400.pcml.AS400Constants;
+import org.wso2.carbon.connector.pcml.AS400Constants;
 import org.wso2.connector.integration.test.base.ConnectorIntegrationTestBase;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,7 +48,7 @@ public class AS400TraceTest extends ConnectorIntegrationTestBase {
      */
     @BeforeClass(alwaysRun = true)
     public void setEnvironment() throws Exception {
-        init("as400-pcml-connector-1.0.0-SNAPSHOT");
+        init("pcml-connector-1.0.0");
         esbRequestHeadersMap.put(HttpHeaders.ACCEPT_CHARSET, StandardCharsets.UTF_8.displayName());
         esbRequestHeadersMap.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML);
     }

@@ -23,6 +23,6 @@
     <sequence>
         <!--Using a property to get password if secure vault is used-->
         <property expression="$func:password" name="as400.password" scope="operation" type="STRING"/>
-        <class name="org.wso2.carbon.connector.as400.pcml.AS400Initialize"/>
+        <class name="org.wso2.carbon.connector.pcml.AS400Initialize"/>
     </sequence>
 </template>

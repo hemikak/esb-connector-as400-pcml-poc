@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.carbon.connector.as400.pcml.test.integration;
+package org.wso2.carbon.connector.pcml.test.integration;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -41,7 +41,7 @@ public class AS400SocketPropertiesTest extends ConnectorIntegrationTestBase {
      */
     @BeforeClass(alwaysRun = true)
     public void setEnvironment() throws Exception {
-        init("as400-pcml-connector-1.0.0-SNAPSHOT");
+        init("pcml-connector-1.0.0");
         esbRequestHeadersMap.put(HttpHeaders.ACCEPT_CHARSET, StandardCharsets.UTF_8.displayName());
         esbRequestHeadersMap.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML);
     }

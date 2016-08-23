@@ -16,10 +16,9 @@
  * under the License.
  */
 
-package org.wso2.carbon.connector.as400.pcml;
+package org.wso2.carbon.connector.pcml;
 
 import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;

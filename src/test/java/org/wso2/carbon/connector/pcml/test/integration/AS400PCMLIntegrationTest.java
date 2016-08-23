@@ -15,14 +15,17 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.carbon.connector.as400.pcml.test.integration;
+package org.wso2.carbon.connector.pcml.test.integration;
 
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import org.json.JSONObject;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.connector.integration.test.base.ConnectorIntegrationTestBase;
 import org.wso2.connector.integration.test.base.RestResponse;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,9 +39,9 @@ public class AS400PCMLIntegrationTest extends ConnectorIntegrationTestBase {
 
     @BeforeClass(alwaysRun = true)
     public void setEnvironment() throws Exception {
-        init("as400-pcml-connector-1.0.0-SNAPSHOT");
-        esbRequestHeadersMap.put("Accept-Charset", "UTF-8");
-        esbRequestHeadersMap.put("Content-Type", "application/json");
+        init("pcml-connector-1.0.0");
+        esbRequestHeadersMap.put(HttpHeaders.ACCEPT_CHARSET, StandardCharsets.UTF_8.displayName());
+        esbRequestHeadersMap.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML);
     }
 
     @Test(enabled = true, groups = {"wso2.esb"}, description = "AS400PCML test case")

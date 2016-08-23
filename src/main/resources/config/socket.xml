@@ -26,6 +26,6 @@
     <parameter name="soTimeout" description="Value for SO_TIMEOUT socket option in milliseconds."/>
     <parameter name="tcpNoDelay" description="Value for TCP_NODELAY socket option. Value should be true or false."/>
     <sequence>
-        <class name="org.wso2.carbon.connector.as400.pcml.AS400SetSocketProperties"/>
+        <class name="org.wso2.carbon.connector.pcml.AS400SetSocketProperties"/>
     </sequence>
 </template>

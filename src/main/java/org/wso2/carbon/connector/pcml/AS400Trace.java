@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.carbon.connector.as400.pcml;
+package org.wso2.carbon.connector.pcml;
 
 import com.ibm.as400.access.Trace;
 import org.apache.synapse.MessageContext;

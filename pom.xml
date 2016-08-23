@@ -20,7 +20,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.wso2.carbon.connector</groupId>
-    <artifactId>org.wso2.carbon.connector.as400.pcml</artifactId>
+    <artifactId>org.wso2.carbon.connector.pcml</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <name>WSO2 Carbon - PCML Connector For AS400</name>
@@ -29,7 +29,7 @@
     <properties>
         <axis2.osgi.version.range>1.7.1</axis2.osgi.version.range>
         <axiom.osgi.version.range>1.2.5</axiom.osgi.version.range>
-        <connector.name>as400-pcml</connector.name>
+        <connector.name>pcml</connector.name>
         <test.framework.version>4.2.0</test.framework.version>
         <esb.version>4.9.0</esb.version>
         <carbon.kernel.version>4.4.1</carbon.kernel.version>

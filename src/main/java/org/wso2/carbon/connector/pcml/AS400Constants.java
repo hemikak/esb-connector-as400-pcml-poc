@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.carbon.connector.as400.pcml;
+package org.wso2.carbon.connector.pcml;
 
 import org.wso2.carbon.utils.CarbonUtils;
 

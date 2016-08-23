@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.carbon.connector.as400.pcml;
+package org.wso2.carbon.connector.pcml;
 
 import com.ibm.as400.access.AS400;
 import com.ibm.as400.access.SocketProperties;
@@ -27,7 +27,7 @@ import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.core.util.ConnectorUtils;
 
 /**
- * Invoked when "as400.pcml.socket" synapse is called.
+ * Invoked when "pcml.socket" synapse is called.
  */
 public class AS400SetSocketProperties extends AbstractConnector {
     /**

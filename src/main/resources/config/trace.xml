@@ -27,6 +27,6 @@
     <parameter name="warning" description="Enables/Disables warning trace logs."/>
     <parameter name="all" description="Enables/Disables all trace logs."/>
     <sequence>
-        <class name="org.wso2.carbon.connector.as400.pcml.AS400Trace"/>
+        <class name="org.wso2.carbon.connector.pcml.AS400Trace"/>
     </sequence>
 </template>
